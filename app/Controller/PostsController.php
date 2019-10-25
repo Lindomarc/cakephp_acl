@@ -15,6 +15,11 @@ class PostsController extends AppController {
  */
 	public $components = array('Paginator');
 
+	public function beforeFilter(){
+		parent::beforeFilter();
+		$this->Auth->allow('index', 'view');
+	}
+
 /**
  * index method
  *
@@ -99,18 +104,5 @@ class PostsController extends AppController {
 			$this->Flash->error(__('The post could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
-	}
-
-	public function login() {
-		if ($this->request->is('post')) {
-			if ($this->Auth->login()) {
-				return $this->redirect($this->Auth->redirectUrl());
-			}
-			$this->Session->setFlash(__('Your username or password was incorrect.'));
-		}
-	}
-
-	public function logout() {
-		//Leave empty for now.
 	}
 }

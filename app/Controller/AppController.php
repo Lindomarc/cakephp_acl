@@ -33,27 +33,14 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
     public $components = array(
-        'Flash',
+		'Acl',
+		'Flash',
         'Auth' => array(
-            'loginRedirect' => array(
-                'controller' => 'posts',
-                'action' => 'index'
-            ),
-            'logoutRedirect' => array(
-                'controller' => 'pages',
-                'action' => 'display',
-                'home'
-            ),
-            'authenticate' => array(
-                'Form' => array(
-                    'passwordHasher' => 'Blowfish'
-                )
-			),
-			'authorize' => array(
+            'authorize' => array(
                 'Actions' => array('actionPath' => 'controllers')
-			),
-			'Session'
-		)
+            )
+        ),
+        'Session'
 	);
 
 	public $helpers = array('Html', 'Form', 'Session');
@@ -63,6 +50,8 @@ class AppController extends Controller {
 			$debugkit = array('DebugKit.Toolbar' => array('history' => 10));
 			$this->components = Hash::merge($this->components, $debugkit);
 		}
+		$this->Auth->allow('display');
+		
 		//Configure AuthComponent
 		$this->Auth->loginAction = array(
 			'controller' => 'users',
